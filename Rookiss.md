@@ -189,4 +189,32 @@ p.sendline("2")
 p.interactive() #get the bin/sh
 ```
 
+ # LEVEL - dragon
 
+in the program we get we can fight 2 dragons one dragon is Mama Dragon and the seconde one is Baby Dragon and we can play 2 carecters Priest or a Knight we cna see that the health of the dragons is stored one byte from the Regeneration of the dragon so the health stored at a char so if we will get the value of the healt to 128 we will make the value that is stored in the char a negative value so the char will over flow to the Regeneration and will make the dragon lose all of its health and we will win after that we can see that in the function where we are fightinh thr dragon after we win we free the pointer that stored the dregon values 
+and if we look at the if we get to when we win 
+
+```
+
+
+v4 = malloc(0x10u);
+/*
+in the start of the function we alocate the memore for the pointer that stores the dragon valuse
+*/
+
+if ( v2 )
+  {
+    puts("Well Done Hero! You Killed The Dragon!");
+    puts("The World Will Remember You As:");
+    v5 = malloc(0x10u);
+    __isoc99_scanf("%16s", v5);
+    puts("And The Dragon You Have Defeated Was Called:");
+    ((void (__cdecl *)(_DWORD *))*v4)(v4);
+  }
+```
+so becuse we freed v4 before when we alocate v5 v5 will point to the adress v4 pointed to so what we enter in scanf to v5 will be write over what was written in v4 so in the end when we jump to a funcion v4 contaiend we will jump to what we write in the scanf to v5 so becuse in the secretlevel we have system(bin/sh) comment we will jump there 
+this is the string i used to get the flag 
+```
+(python2 -c "print('2\n2\n1\n3\n3\n2\n3\n3\n2\n3\n3\n2\n3\n3\n2\n'+'\xbf\x8d\x04\x08\n')";cat)
+```
+ 
