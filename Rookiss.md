@@ -218,3 +218,6 @@ this is the string i used to get the flag
 (python2 -c "print('2\n2\n1\n3\n3\n2\n3\n3\n2\n3\n3\n2\n3\n3\n2\n'+'\xbf\x8d\x04\x08\n')";cat)
 ```
  
+ # LEVEL - fix
+so in this level we get a shell code copyed from shell storm the shell code of bin/sh doesnt work in this program becouse when we push verebles to the stack at some point we push on the shellcode that on the stack too and we overide the stack with rubish so what we will need to do is to change the posishion of sh so the easyest soloshion is too pop esp insted of pushing ax in line 6 of the asm code so if we replace index 15 of the shell code with 5c hex 92 dec wich stand for pop esp and then we will change the sp adress and we could continue executing the shell code but becouse there is a stack limit we will need before executing the prugram write ulimit -s unlimited in the comend prompt to desabel stack limitation.
+
