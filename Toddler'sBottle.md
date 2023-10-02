@@ -124,7 +124,7 @@ women - 0x7fffffffde30 —▸ 0x614f30 —▸ 0x401550 —▸ 0x40117a (Human::g
 
 so we see they point to thire vtabel and the code add 8 to the v tabel to get to the right function with is introduce() but what we can do is free the memory of man and women and than we will alocate memory for the new string in opthion 2 in the swith statment and that string will hold the vtabel addres-8 and this new alocated memory will go to the heap addres of man so when we will try to execute function introduce() the program will go strait to the start of the vtabel and the start of the vtabel holds the function give_shell() so we will get the shell and get the flag 
 
-so i used python2 -c "print('A' * 96 + '\x68\x15\x40\x00\n')" as the string to pass to the new alocated string and the size i sent was 4 becuse the size of the addres is 4 bytes(./uaf 4 python2 -c "print('A' * 96 + '\x68\x15\x40\x00\n')")
+so i used python2 -c "print('\x68\x15\x40\x00\n')" as the string to pass to the new alocated string and the size i sent was 4 becuse the size of the addres is 4 bytes(./uaf 4 python2 -c "print('A' * 96 + '\x68\x15\x40\x00\n')")
 
 the flag is: yay_f1ag_aft3r_pwning
 
